@@ -1,0 +1,25 @@
+<button (click)="load()">LOAD</button>
+<button (click)="start()">START</button>
+<button (click)="stop()">STOP</button>
+
+
+<svg *ngIf="gameObs | async as G" #svgE>
+  <g #root transform="translate(400 300) scale(0.5)" [appSvgDraggable]="svgE" [appSvgZoomable]="svgE">
+    <circle *ngFor="let P of G.planets" class="planet" transform=""
+            [appSvgDraggable] = "true" (svgDragEnd) = "endDragPlanet(P, $event)"
+            [attr.cx]="P.p[0]" [attr.cy]="P.p[1]" [attr.r]="P.radius" />
+    <g *ngFor="let player of getPlayers(G)">
+      <circle *ngFor="let S of getShips(player)" class="ship"
+              [attr.cx]="S.p[0]" [attr.cy]="S.p[1]" [attr.r]="S.radius"
+              [attr.fill] = "player.color" />
+    </g>
+    <polyline *ngFor="let pts of trajectoriesObs | async; index as i"
+        fill="none" [attr.stroke]="colors[i]"
+        [attr.points]="pts"
+        />
+  </g>
+</svg>
+
+<pre>
+  {{gameObs | async | json}}
+</pre>
