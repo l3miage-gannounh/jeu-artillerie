@@ -23,5 +23,29 @@ export class PlaymapComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  endDragPlanet(P: Planet, M: DOMMatrix): void {
+    // console.log('endDragPlanet', P, M);
+    const pt0 = new DOMPoint(0, 0);
+    const pt = pt0.matrixTransform(M);
+    this.GS.updatePlanet(P, {p: [P.p[0] + pt.x, P.p[1] + pt.y].map(
+      x => Math.round(1000 * x) / 1000
+    ) as COORDINATE });
+  }
+
+  load(): void {
+    this.GS.load();
+  }
+
+  start(): void {
+    this.GS.start();
+  }
+
+  stop(): void {
+    this.GS.stop();
+  }
+
+  get colors(): string[] {
+    return this.GS.colors;
+  }
 
 }
