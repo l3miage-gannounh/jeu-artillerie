@@ -23,5 +23,20 @@ export class PlaymapComponent implements OnInit {
   ngOnInit(): void {
   }
 
-
+  changeP(M:SVGMatrix, planet:Planet,cercle:Element){
+    this.GS.updatePlanet(planet,{"p":[planet.p[0] + M.e, M.f + planet.p[1]]});
+    cercle.setAttribute("transform","");
+  }
+  changeS(player:Player,M:SVGMatrix, base:Ship,joueur:Element){
+    this.GS.updateShip(player, base,{"p":[M.e +base.p[0], M.f+base.p[1]]});
+  }
+  startG():void{
+    this.GS.start();
+  }
+  stopG():void{
+    this.GS.stop();
+  }
+  loadG():void{
+    this.GS.load();
+  }
 }

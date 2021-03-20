@@ -1,3 +1,48 @@
+<button (click)="startG()">Start</button>
+<button (click)="stopG()">Stop</button>
+<button (click)="loadG()">Load</button>
+
+<svg *ngIf="gameObs | async as myObject" #svgE>
+  <g  [appSvgZoomable]="svgE"
+      [appSvgDraggable]="svgE"
+      #map
+  >
+    <g *ngIf="myObject.planets as p" class="">
+      <circle
+        #planet
+        *ngFor="let cercle of p"
+        [attr.r]="cercle.radius"
+        [attr.cx]="cercle.p[0]"
+        [attr.cy]="cercle.p[1]"
+        class="planet"
+        [appSvgZoomable]="true"
+        [appSvgDraggable]="true"
+        (svgDragEnd)="changeP($event, cercle, planet)"
+      />
+    </g>
+    <g *ngFor="let ship of myObject.players">
+      <circle
+        #joueur
+        *ngFor="let base of ship.ships"
+        [attr.r]="base.radius"
+        [attr.cx]="base.p[0]"
+        [attr.cy]="base.p[1]"
+        [appSvgZoomable]="true"
+        [appSvgDraggable]="true"
+        (svgDragEnd)="changeS(ship, $event, base, joueur)"
+        class="ship"
+      />
+      <polyline *ngFor="let traj of (trajectoriesObs | async)" [attr.points]="traj"/>
+    </g>
+  </g>
+</svg>
+
+<!-- <pre *ngFor="let player of (gameObs| async).players" style="border: 5px solid;">
+  <h3>{{player.name}}</h3>
+
+</pre> -->
 <pre>
-  {{gameObs | async | json}}
+  <!-- {{trajectoriesObs | async |json }} -->
+  {{ gameObs | async | json }}
+
 </pre>
